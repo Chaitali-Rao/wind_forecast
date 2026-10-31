@@ -1,0 +1,18 @@
+services:
+  backend:
+    build: ./backend
+    environment:
+      # Try to download real Elexon data on first start; falls back to demo data if offline.
+      LIVE_FETCH_ON_START: "true"
+      DEFAULT_CUTOFF: "09:00"
+    volumes:
+      - ./backend/data:/srv/data
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
